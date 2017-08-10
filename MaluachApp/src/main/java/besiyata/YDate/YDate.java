@@ -10,6 +10,8 @@ import java.util.TreeMap;
 import java.lang.ref.SoftReference;
 import java.util.TimeZone;
 
+import besiyata.gp.EventHandler;
+
 public class YDate
 {
     public interface TimeZoneProvider {
@@ -166,19 +168,13 @@ public class YDate
                 return false;
             }
         }
-        GregorianDate(int days)
+        public GregorianDate(int days)
         {
             valid=setByDays(days);
         }
-        public String dayString(boolean Heb)
+        public String dayString(YDateLanguage.Language language)
         {
-            String s=Integer.toString(this.day);
-            if(Heb)
-                s+= " ב";
-            else
-                s+= " in ";
-            s+= monthName(Heb) + " " + Integer.toString(this.year);
-            return s;
+            return YDateLanguage.getLanguageEngine(language).FormatGregorianDate(day,month,year);
         }
         public int dayInWeek()
         {
@@ -223,8 +219,9 @@ public class YDate
         {
             return daysSinceBeginning()+JULIAN_DAY_OFFSET-0.5;
         }
-        public String monthName(boolean Heb)
+        public String monthName(YDateLanguage.Language language)
         {
+            /*
             final String[][] months =
             {
                 {"ינואר", "פברואר", "מרס", 
@@ -255,8 +252,8 @@ public class YDate
                  "Oct",
                  "Nov",
                  "Dec"},
-            };
-            return months[Heb?0:1][this.month-1];
+            };*/
+            return YDateLanguage.getLanguageEngine(language).getGregMonthToken(this.month-1);
         }
         private static final int[][] months_days_offsets=
         {
@@ -506,16 +503,13 @@ public class YDate
             setMonthDay(this.day_in_year);
             return true;
         }
-        JewishDate(int days)
+        public JewishDate(int days)
         {
             valid=setByDays(days);
         }
-        public String dayString(boolean Heb)
+        public String dayString(YDateLanguage.Language lang)
         {
-            if (!Heb)
-                return Integer.toString(this.day) + " in " + monthName(Heb) + " " + Integer.toString(this.year);
-            else
-                return Format.HebIntString(this.day, true)+ " ב" + monthName(Heb) + " " + Format.HebIntString(this.year,true);
+            return YDateLanguage.getLanguageEngine(lang).FormatJewishDate(day,monthID(),year);
         }
         public int NumberOfShabbats()
         {
@@ -627,12 +621,9 @@ public class YDate
             else
                 return "Zodiac. "+zodiac_names[1][mazal] +" ("+four_elements_names[1][mazal%4]+")";
         }
-        public String TkufaName(boolean Heb)
+        public String TkufaName(YDateLanguage.Language language)
         {
-            if (Heb)
-                return "תקופת "+monthNameByID(TkufaType(),Heb);
-            else
-                return monthNameByID(TkufaType(),Heb)+" Period";
+            return YDateLanguage.getLanguageEngine(language).FormatPeriod(TkufaType());
         }
         public String MazalBeginning(TimeZoneProvider tz)
         {
@@ -665,6 +656,39 @@ public class YDate
             //and that tkufa started at tkufa*10227/112
             //which is actually 1461/16 or 16/1461
         }
+
+		public static final int [][] possibleMonthDay={
+			{MONDAY,TUESDAY,THURSDAY,SATURDAY},//TISHREI
+			{MONDAY,WEDNESDAY,THURSDAY,SATURDAY},//CHESHVAN
+			{SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY},//KISLEV
+			{SUNDAY,MONDAY,TUESDAY,WEDNESDAY,FRIDAY},//TEVET
+			{MONDAY,TUESDAY,WEDNESDAY,THURSDAY,SATURDAY},//SHEVAT
+			{MONDAY,WEDNESDAY,FRIDAY,SATURDAY},//ADAR
+			{MONDAY,WEDNESDAY,THURSDAY,SATURDAY},//ADAR_I
+			{MONDAY,WEDNESDAY,FRIDAY,SATURDAY},//ADAR_II
+			{SUNDAY,TUESDAY,THURSDAY,SATURDAY},//NISAN
+			{MONDAY,TUESDAY,THURSDAY,SATURDAY},//IYAR
+			{SUNDAY,TUESDAY,WEDNESDAY,FRIDAY},//SIVAN
+			{SUNDAY,TUESDAY,THURSDAY,FRIDAY},//TAMMUZ
+			{MONDAY,WEDNESDAY,FRIDAY,SATURDAY},//AV
+			{SUNDAY,MONDAY,WEDNESDAY,FRIDAY}//ELUL
+		};
+		public static final int [][] possibleMonthLength={
+			{30},//TISHREI
+			{29,30},//CHESHVAN
+			{29,30},//KISLEV
+			{29},//TEVET
+			{30},//SHEVAT
+			{29},//ADAR
+			{30},//ADAR_I
+			{29},//ADAR_II
+			{30},//NISAN
+			{29},//IYAR
+			{30},//SIVAN
+			{29},//TAMMUZ
+			{30},//AV
+			{29}//ELUL
+		};
         public String yearSign()
         {
             final byte [] yeartype={8,11,21};
@@ -676,12 +700,17 @@ public class YDate
         {
             return (day==30 || day==1);
         }
+        public boolean shabbaton(YDatePreferences.DiasporaType diaspora)
+        {
+            if (diaspora== YDatePreferences.DiasporaType.Both)
+                return shabbaton(true) || shabbaton(false);
+            return shabbaton(diaspora == YDatePreferences.DiasporaType.Diaspora);
+        }
         public boolean shabbaton(boolean diaspora)
         {
             byte[] events =YDateAnnual.getEvents(year_length, year_first_day, diaspora);
             short type=YDateAnnual.getEventType(events[day_in_year]);
             return ((type & YDateAnnual.EV_TYPE_MASK) == YDateAnnual.EV_YOM_TOV) || (dayInWeek()==7);
-            
         }
         public int dayOfChanukkah()
         {
@@ -754,15 +783,16 @@ public class YDate
             lstr+=" ("+clock_type+ ")";
             return lstr;
         }
-        public String MoladString(TimeZoneProvider tz)
+        public String MoladString(TimeZoneProvider tz, YDateLanguage.Language language)
         { 
+	//TODO: make this multilingual
             long parts=MoladParts();
             int days=(int)(parts/DAY);
             int single_parts=(int)(parts%DAY);
             int hours=(int)(single_parts/HOUR);
             single_parts=single_parts%HOUR;
             String lstr="המולד לחודש ";
-            lstr+=monthName(true);
+            lstr+=monthName(language);
             lstr+=" ";
             lstr+=Format.HebIntString(year(),true);
             lstr+=" ביום ";
@@ -863,9 +893,9 @@ public class YDate
         {
             return monthID(calculateYearMonths(year),this.month);
         }
-        public String monthNameByID(int mID,boolean Heb)
+        public static String monthNameByID(int mID,YDateLanguage.Language language)
         {
-            final String[][] months =
+            /*final String[][] months =
             {
                 {"תשרי", "חשוון", "כסלו", "טבת",
                 "שבט", "אדר",
@@ -879,12 +909,12 @@ public class YDate
                 "Adar II",
                 "Nisan", "Iyar",
                 "Sivan", "Tammuz", "Av", "Elul"},
-            };
-            return months[Heb?0:1][mID];
+            };*/
+            return YDateLanguage.getLanguageEngine(language).getHebMonthToken(mID);
         }
-        public String monthName(boolean Heb)
+        public String monthName(YDateLanguage.Language language)
         {
-            return monthNameByID(monthID(),Heb);
+            return monthNameByID(monthID(),language);
         }
         public int daysSinceBeginning()
         {
@@ -1140,73 +1170,18 @@ public class YDate
     }
 
     public JewishDate hd;
-    
     public GregorianDate gd;
-    private YDateAnnual events_previous=null;
-    private YDateAnnual events_current=null;
-    private YDateAnnual events_next=null;
-    private static AbstractMap<Integer ,SoftReference<YDateAnnual> > annuals_cache = new TreeMap<>();
-    private static AbstractMap<Integer ,SoftReference<YDateAnnual> > annuals_cache_diaspora = new TreeMap<>();
 
-    private static YDateAnnual getAnnualFromCache(int hd_year,int hd_year_length, int hd_year_first_day,boolean diaspora)
+    private EventHandler dateChanged = new EventHandler();
+    public void registerOnDateChanged(EventHandler.Listener listener)
     {
-        AbstractMap<Integer ,SoftReference<YDateAnnual> > cache;
-        if (diaspora)
-        {
-            cache=annuals_cache_diaspora;
-        }
-        else
-            cache=annuals_cache;
-        YDateAnnual annual;
-        SoftReference<YDateAnnual> sa = cache.get(hd_year);
-        if (sa!=null)
-        {
-            annual=sa.get();
-            if (annual!=null)
-                return annual;
-        }
-        annual = new YDateAnnual(hd_year,hd_year_length,hd_year_first_day,diaspora);
-        cache.put(hd_year,new SoftReference<>(annual));
-        return annual;
+        dateChanged.addListener(listener);
     }
-    public void setMaintainEvents(boolean diaspora)
+    private void notifyDateChanged()
     {
-        if (events_current==null)
-        {
-            events_current=getAnnualFromCache(hd.year,hd.year_length,hd.year_first_day,diaspora);
-            events_next=getAnnualFromCache(hd.year+1,JewishDate.calculateYearLength(hd.year+1),hd.year_first_day+hd.year_length,diaspora);
-            events_previous=getAnnualFromCache(hd.year-1,JewishDate.calculateYearLength(hd.year-1),JewishDate.calculateYearFirstDay(hd.year-1),diaspora);
-        }
-    }
-    public YDateAnnual yearEvents(){ return events_current;}
-    public byte getEvent()
-    {
-        return getEvent(hd.dayInYear());
-    }
-    public byte getEvent(int day_in_year)
-    {
-        if (day_in_year<-events_previous.yearLength() || day_in_year>= events_current.yearLength() + events_next.yearLength())
-            return 0;
-        if (day_in_year<0)
-            return events_previous.getYearEvents()[events_previous.yearLength()+day_in_year];
-        if (day_in_year<events_current.yearLength())
-            return events_current.getYearEvents()[day_in_year];
-        day_in_year-=events_current.yearLength();
-        return events_next.getYearEvents()[day_in_year];
+        dateChanged.trigger(this);
     }
 
-    private void maintainEvents()
-    {
-        if (events_current!=null)
-        {
-            if (events_current.year()!=hd.year())
-            {
-                boolean diaspora=events_current.diaspora();
-                events_current=null;
-                setMaintainEvents(diaspora);
-            }
-        }
-    }
     private static boolean commonRange(int days)
     {
         if (days<JewishDate.DAYS_OF_6001 && days>=GregorianDate.DAYS_OF_1600)
@@ -1224,7 +1199,7 @@ public class YDate
         {
             gd.setByDays(days);
             hd.setByDays(days);
-            maintainEvents();
+            notifyDateChanged();
             return true;
         }
         return false;
@@ -1310,7 +1285,7 @@ public class YDate
         {
             gd=new_gd;
             hd.setByDays(days);
-            maintainEvents();
+            notifyDateChanged();
             return true;
         }
         return false;
@@ -1321,7 +1296,7 @@ public class YDate
         if (commonRange(days) && new_hd.valid) {
             hd = new_hd;
             gd.setByDays(days);
-            maintainEvents();
+            notifyDateChanged();
             return true;
         }
         return false;
@@ -1370,12 +1345,10 @@ public class YDate
                 hd= new JewishDate(gd.daysSinceBeginning());
         }
     }
-    private YDate(JewishDate hd, GregorianDate gd, boolean events, boolean diaspora)
+    private YDate(JewishDate hd, GregorianDate gd)
     {
         this.gd=new GregorianDate(gd);
         this.hd=new JewishDate(hd);
-        if (events)
-            setMaintainEvents(diaspora);
     }
     private YDate(int days)
     {
@@ -1384,10 +1357,7 @@ public class YDate
     }
     public static YDate createFrom(YDate other)
     {
-        boolean diaspora=false;
-        if (other.events_current!=null)
-            diaspora=other.events_current.diaspora();
-        return new YDate(other.hd,other.gd,other.events_current!=null,diaspora);
+        return new YDate(other.hd,other.gd);
     }
     public static YDate createFrom(int days)
     {
@@ -1452,22 +1422,10 @@ public class YDate
             return Format.TimeString(hour, min,sec);
         return Format.TimeString(hour, min);
     }
-    public boolean shabbaton()
+    public boolean shabbaton(YDatePreferences.DiasporaType diaspora)
     {
-        return hd.shabbaton(getPreferences().diaspora);
+        return hd.shabbaton(diaspora);
     }
-    YDatePreferences prefernces;
-    YDatePreferences getPreferences()
-    {
-        if (prefernces==null)
-        {
-            prefernces=new YDatePreferences();
-        }
-        return prefernces;
-    }
-    public void setPreferences(YDatePreferences p)
-    {
-        prefernces=p;
-    }
+
 
 }

@@ -34,4 +34,5 @@
     <string name="week_day_short_thu">ה</string>
     <string name="week_day_short_tue">ג</string>
     <string name="week_day_short_wed">ד</string>
+    <string name="ydate_lang">he</string>
 </resources>

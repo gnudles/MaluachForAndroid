@@ -9,10 +9,18 @@ import besiyata.YDate.YDate.*;
  */
 
 public class NativeTzProvider implements YDate.TimeZoneProvider {
+    TimeZone tz;
+    public NativeTzProvider()
+    {
+        tz=Calendar.getInstance().getTimeZone();
+    }
+    public NativeTzProvider(TimeZone timeZone)
+    {
+        tz=timeZone;
+    }
     @Override
     public float getOffset(Date d) {
 
-
-        return (Calendar.getInstance().getTimeZone().getOffset(d.getTime())/1000L)/3600.0f;
+        return (tz.getOffset(d.getTime())/1000L)/3600.0f;
     }
 }

@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
 import besiyata.YDate.YDate;
+import besiyata.YDate.YDateLanguage;
 
 /**
  * Implementation of App Widget functionality.
@@ -14,8 +15,7 @@ public class MaluachTimeWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-
-        CharSequence widgetText = YDate.getNow().hd.dayString(true);
+        CharSequence widgetText = YDate.getNow().hd.dayString(YDateLanguage.Language.HEBREW);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.maluach_time_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);

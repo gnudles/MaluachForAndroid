@@ -34,5 +34,6 @@
     <string name="month_greg_full_dec">December</string>
 
     <string name="btn_prev_character">◄</string>
+    <string name="ydate_lang">en</string>
 
 </resources>

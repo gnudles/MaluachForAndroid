@@ -46,12 +46,12 @@ public class YDateViewStyle implements StyleDraw {
     private void initCellPath()
     {
         mCellPath= new Path();
-        mCellPath.moveTo(mHSpacing,mHSpacing);
+        mCellPath.moveTo(mHSpacing+mCellMin*0.2f,mHSpacing);
         mCellPath.lineTo(mCellW+mHSpacing,mHSpacing);
         mCellPath.lineTo(mCellW+mHSpacing,mCellH+mHSpacing);
-        mCellPath.lineTo(mCellMin*0.2f+mHSpacing,mCellH+mHSpacing);
-        mCellPath.lineTo(0+mHSpacing,mCellH-mCellMin*0.2f+mHSpacing);
-        mCellPath.lineTo(mHSpacing,mHSpacing);
+        mCellPath.lineTo(0+mHSpacing,mCellH+mHSpacing);
+        mCellPath.lineTo(0+mHSpacing,mCellMin*0.2f+mHSpacing);
+        mCellPath.lineTo(mHSpacing+mCellMin*0.2f,mHSpacing);
 
         mCellPathDark= new Path();
         mCellPathDark.moveTo(mHSpacing,mHSpacing);
@@ -94,11 +94,14 @@ public class YDateViewStyle implements StyleDraw {
         mCellMin=Math.min(mCellH,mCellW);
         circle_offset_x=3;
         circle_offset_y=3;
-
+        mCellPaint.setTextAlign(Paint.Align.CENTER);
+        mTransparentPaint.setTextAlign(Paint.Align.CENTER);
         if (mCellMin>12)
         {
             font_size=(float)mCellMin*0.5f;
             mTransparentPaint.setTextSize(font_size);
+            mCellPaint.setTextSize(font_size);
+
             Paint.FontMetrics fontMetrics = mTransparentPaint.getFontMetrics();
             font_ascent=-fontMetrics.ascent;
             mDrawText=true;
@@ -115,7 +118,7 @@ public class YDateViewStyle implements StyleDraw {
 
         mCellPaint.setColor(0xff49a3ff);
         cell_canvas.drawPath(mCellPathLight,mCellPaint);
-        mCellPaint.setColor(0xff3993dd);
+        mCellPaint.setColor(0xff0b6acb);
         cell_canvas.drawPath(mCellPathDark,mCellPaint);
 
         cell_canvas.drawCircle(circle_offset_x,circle_offset_y,3.0f,mTransparentPaint);
@@ -123,9 +126,9 @@ public class YDateViewStyle implements StyleDraw {
         cell_canvas.setBitmap(mCellBitmapSelected);
         mCellPaint.setColor(0xffff8019);
         cell_canvas.drawPath(mSelectionPath,mCellPaint);
-        mCellPaint.setColor(0xff49a3ff);
+        mCellPaint.setColor(0xffaecff1);
         cell_canvas.drawPath(mCellPathLight,mCellPaint);
-        mCellPaint.setColor(0xff3993dd);
+        mCellPaint.setColor(0xff549be5);
         cell_canvas.drawPath(mCellPathDark,mCellPaint);
 
         cell_canvas.drawCircle(circle_offset_x,circle_offset_y,3.0f,mTransparentPaint);
@@ -142,20 +145,21 @@ public class YDateViewStyle implements StyleDraw {
         x += mSpacing;
         mCellPaint.setColor(0xff3993dd);
         c.drawRect(x,y,x+mCellW-mSpacing,y+mHeaderH,mCellPaint);
-        float txt_w=mTransparentPaint.measureText(txt);
-        float text_pos_x=x+(mCellW-2*mSpacing-txt_w)/2.0f;
+        //float txt_w=mCellPaint.measureText(txt);
+        float text_pos_x=x+(mCellW-mSpacing)/2.0f;
         float text_pos_y=y+(mHeaderH+(font_ascent+font_size)/2.0f)/2.0f;
         mCellPaint.setColor(0xff000000);
+        mCellPaint.setTextSize(font_size);
+        mCellPaint.setTextAlign(Paint.Align.CENTER);
         c.drawText(txt, text_pos_x, text_pos_y, mCellPaint);
     }
     public void drawCell(Canvas c, int x, int y,String txt, DrawAttributes attr)
     {
         Bitmap toDraw;
-        float txt_w=mTransparentPaint.measureText(txt);
-        float text_pos_x=x+mSpacing+(mCellW-txt_w)/2.0f;
-        float text_pos_y=y+mSpacing+(mCellH+(font_ascent+font_size)/2.0f)/2.0f;
+        //float txt_w=mCellPaint.measureText(txt);
         x += mSpacing/2;
         y += mSpacing/2;
+
         if (attr.before || attr.after) {
             toDraw = mCellBitmapGray;
         }
@@ -180,6 +184,27 @@ public class YDateViewStyle implements StyleDraw {
         if (attr.isToday)
             text_color=0xffffde00;
         mCellPaint.setColor(text_color);
-        c.drawText(txt, text_pos_x, text_pos_y, mCellPaint);
+        if (txt.contains(":")) {
+            String[] splited=txt.split(":",2);
+            mCellPaint.setTextAlign(Paint.Align.RIGHT);
+            mCellPaint.setTextSize(font_size*1.25f);
+            float text_pos_x=x+mCellW-mSpacing;
+            float text_pos_y=y+(font_ascent)+mSpacing;
+            c.drawText(splited[0], text_pos_x, text_pos_y, mCellPaint);
+            text_pos_x=x+mSpacing;
+            text_pos_y=y+mCellH-mSpacing;
+            mCellPaint.setTextAlign(Paint.Align.LEFT);
+            mCellPaint.setTextSize(font_size*0.75f);
+            c.drawText(splited[1], text_pos_x, text_pos_y, mCellPaint);
+
+        }
+        else
+        {
+            float text_pos_x=x+(mCellW)/2.0f;
+            float text_pos_y=y+(mCellH)/2.0f+(font_ascent*1.4f-1.0f)/2;
+            mCellPaint.setTextAlign(Paint.Align.CENTER);
+            mCellPaint.setTextSize(font_size*1.4f);
+            c.drawText(txt, text_pos_x, text_pos_y, mCellPaint);
+        }
     }
 }

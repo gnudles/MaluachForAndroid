@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         lstr+="שנה "+dateCursor.hd.ShmitaTitle()+"\n";
         int day_tkufa=dateCursor.hd.dayInTkufa();
         int day_mazal=dateCursor.hd.dayInMazal();
-        lstr+="יום "+Integer.toString(day_tkufa+1)+" ל" +dateCursor.hd.TkufaName(true)+"\n";
+        lstr+="יום "+Integer.toString(day_tkufa+1)+" ל" +dateCursor.hd.TkufaName(language)+"\n";
         if (day_tkufa==0)
             lstr+="תחילת תקופה "+dateCursor.hd.TkufaBeginning(new NativeTzProvider())+"\n";
         if (day_tkufa==59 && dateCursor.hd.TkufaType()==YDate.JewishDate.M_ID_TISHREI)
@@ -74,12 +74,12 @@ public class MainActivity extends Activity {
         lstr+="\nדף יומי "+ DailyLimud.getDafYomi(dateCursor.hd.daysSinceBeginning(), true);
 
         if (lstr.length()>0)
-            showAlert(dateCursor.hd.dayString(true), lstr);
+            showAlert(dateCursor.hd.dayString(language), lstr);
     }
     protected void showMolad(YDate dateCursor)
     {
         String lstr;
-        lstr=dateCursor.hd.MoladString(new NativeTzProvider());
+        lstr=dateCursor.hd.MoladString(new NativeTzProvider(),language);
         showAlert("מולד הלבנה", lstr);
     }
     private void showAlert(String title,String text)
@@ -134,9 +134,9 @@ public class MainActivity extends Activity {
     }
     private void updateText()
     {
-        txtView.setText(ydateView.getDateCursor().hd.dayString(true));
-        txtViewGreg.setText(ydateView.getDateCursor().gd.dayString(true));
-        txtViewEvent.setText(ydateView.getDateCursor().yearEvents().getYearEventForDay(ydateView.getDateCursor().hd));
+        txtView.setText(ydateView.getDateCursor().hd.dayString(language));
+        txtViewGreg.setText(ydateView.getDateCursor().gd.dayString(language));
+        txtViewEvent.setText(ydateView.getDateEvents().yearEvents().getYearEventForDay(ydateView.getDateCursor().hd));
         //textViewTitle.setText(ydateView.getTitle());
         nextMonthBtn.setText(ydateView.getMonthTitle());
         nextYearBtn.setText(ydateView.getYearTitle());
@@ -194,6 +194,7 @@ public class MainActivity extends Activity {
     YDateView ydateView;
     Button nextMonthBtn;
     Button nextYearBtn;
+    YDateLanguage.Language language;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,10 +202,11 @@ public class MainActivity extends Activity {
         //super.attachBaseContext(MyContextWrapper.wrap(getBaseContext(),"he"));
         setContentView(R.layout.activity_main);
 
+        language = YDateLanguage.getLanguageFromCode(getResources().getString(R.string.ydate_lang));
         txtViewGreg = (TextView) findViewById(R.id.textViewGreg);
         txtViewEvent = (TextView) findViewById(R.id.textViewEvent);
         //textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-        txtView = (TextView) findViewById(R.id.textView);
+        txtView = (TextView) findViewById(R.id.textViewHeb);
         switchGregHeb = (Switch) findViewById(R.id.switchHebGreg);
         switchGregHeb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -235,8 +237,10 @@ public class MainActivity extends Activity {
         });
 		Typeface font = Typeface.createFromAsset(getAssets(), "SILEOT.ttf");
         txtView.setTypeface(font);
+        ((TextView) findViewById(R.id.ashrey)).setTypeface(font);
 
         ydateView = (YDateView) findViewById(R.id.ydateView);
+        ydateView.setLanguage(language);
         ydateView.dateClicked().addListener(_showInfo);
         ydateView.dateChanged().addListener(_updateText);
         _updateText.process(null);

@@ -59,6 +59,7 @@ public class YDateAnnual
         "יום ירושלים",
         "יום המשפחה",
         "יום הזכרון ליצחק רבין",//50
+            "תענית ת\"ח ת\"ט",
     };
 
     public static final short EV_NONE=0;
@@ -128,6 +129,7 @@ public class YDateAnnual
         EV_NATIONAL,
         EV_NATIONAL,
         EV_NATIONAL|EV_MEMORIAL,//50
+            EV_TZOM|EV_MEMORIAL,//51
     };
 
 
@@ -162,6 +164,7 @@ public class YDateAnnual
         {JewishDate.M_ID_AV,9,41,1,1},//Tzom 9 Av, dhia
         {JewishDate.M_ID_AV,15,42,1,0},//15 Av
         {JewishDate.M_ID_ELUL,29,43,1,0},//Erev Rosh Hashana
+        {JewishDate.M_ID_SIVAN,20,51,1,0},//5408-5409 memorial
     };
     static final byte [][] event_db_diaspora= 
     {// month_id,day,array index,# of days,jump/dhia(if #_days==1)

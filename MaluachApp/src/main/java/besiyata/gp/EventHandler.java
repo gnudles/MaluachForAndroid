@@ -1,5 +1,6 @@
 package besiyata.gp;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,19 +14,26 @@ public class EventHandler {
     {
         void process( Object sender );
     }
-    private List <Listener> listeners;
+    private List <SoftReference<Listener> > listeners;
     public EventHandler(){
         listeners = new ArrayList<>();
     }
     public void addListener(Listener l)
     {
-        listeners.add(l);
+        listeners.add(new SoftReference<Listener>(l));
     }
     public void trigger( Object sender )
     {
-        for (Listener l : listeners)
+        for (SoftReference<Listener> l : listeners)
         {
-            l.process( sender );
+            Listener lcall=l.get();
+            if (lcall!=null) {
+                lcall.process(sender);
+            }
+            else {
+               listeners.remove(l);
+            }
+
         }
     }
 
