@@ -15,6 +15,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PsalmsActivity">
+            <intent-filter>
+
+                <category android:name="android.intent.category.ALTERNATIVE" />
+            </intent-filter>
+        </activity>
 
         <!-- <receiver android:name=".MaluachCalendarWidget">
             <intent-filter>

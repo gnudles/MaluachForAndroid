@@ -2,7 +2,11 @@ package besiyata.maluach;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -237,8 +241,6 @@ public class MainActivity extends Activity {
         });
 		Typeface font = Typeface.createFromAsset(getAssets(), "SILEOT.ttf");
         txtView.setTypeface(font);
-        ((TextView) findViewById(R.id.ashrey)).setTypeface(font);
-
         ydateView = (YDateView) findViewById(R.id.ydateView);
         ydateView.setLanguage(language);
         ydateView.dateClicked().addListener(_showInfo);
@@ -248,4 +250,29 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.psalms_menu_item:
+                startPsalms();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+    private void startPsalms()
+    {
+        Intent intent = new Intent(this,PsalmsActivity.class);
+        startActivity(intent);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.maluach_menu,menu);
+
+        return true;
+    }
 }

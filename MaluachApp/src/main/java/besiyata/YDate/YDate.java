@@ -521,7 +521,7 @@ public class YDate
         {
             if(diaspora)
             {
-                int day_tkufa=dayInTkufa();
+                //int day_tkufa=dayInTkufa();
                 int starting=getTkufaDay(0)+59;
                 if (daysSinceBeginning()< starting)
                     return false;
