@@ -13,32 +13,44 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package besiyata.YDate;
+package besiyata.YDateAstro;
 
+import java.util.Date;
+import besiyata.YDate.Format;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class YDatePreferences
-{
-    public YDatePreferences()
+/**
+ *
+ * @author Orr Dvori
+ */
+public interface SunTimeEngine {
+    public enum RiseSetCalc
     {
-        TimeZone tz= Calendar.getInstance().getTimeZone();
-        timeZoneProvider=new NativeTzProvider(tz);
-        if (tz.equals(TimeZone.getTimeZone("Asia/Jerusalem")))
-            diaspora=DiasporaType.ErezIsrael;
-        else
-            diaspora=DiasporaType.Diaspora;
+        RISE_ONLY,
+        SET_ONLY,
+        RISE_SET
     }
-    public YDatePreferences(YDate.TimeZoneProvider _timeZoneProvider, DiasporaType _diaspora)
+    public static class RiseSet
     {
-        timeZoneProvider=_timeZoneProvider;
-        diaspora=_diaspora;
+        public RiseSet(){ rise=0;set=0;}
+		public double rise;
+		public double set;
     }
-    public enum DiasporaType{ ErezIsrael,Diaspora,Both};
-    public enum HaftaraMinhag{ SFARADIM,ASHKENAZ,ITALKI,TEIMANI,CHABAD};
-    public double longitude;
-    public double latitude;
-    public double altitude;//in meters from MSL
-    public DiasporaType diaspora;
-    public YDate.TimeZoneProvider timeZoneProvider;
+    /**
+     * @param jd Julian day in local time
+     * @param latitude in degrees, North is positive.
+     * @param longitude in degrees, East is positive.
+     */
+    public void initEngine(double jd, double latitude, double longitude);
+/**
+ * 
+ * @param SunAltitude Rise/Set Altitude (in degrees)
+ * @param calc what to calculate?
+ * @return time in hours UTC (can be negative)
+ */
+    public RiseSet calculateSunRiseSet(double SunAltitude, RiseSetCalc calc);
+    
+
+    
 }

@@ -1,5 +1,19 @@
 /* This is free and unencumbered software released into the public domain.
+ *
+ * THIS SOFTWARE IS PROVIDED THE CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY 
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; BUSINESS
+ * INTERRUPTION; OR ANY SPIRITUAL DAMAGE) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package besiyata.YDate;
 
 import besiyata.YDate.YDate.JewishDate;
@@ -40,124 +54,70 @@ public class TorahReading
     **39 - Chukat Balak         X   X   X   X   X   X   X   X
     * 42 - Matot Mas'ei         V   V   V   V   V   X   X   V
     * 51 - Nitzavim Vayelech    V   X   V   V   V   X   X   V
-    you can obtain the joining in israel by copying the joining outside IL and removing Chukat Balak joining.
-    except year type 4,11,12 where you should remove Behar Bechukotai in 4 Matot Mas'ei in 11 12
-     */
-    final static byte[][][] SidraJoin =
-    {
+    * you can obtain the joining in israel by copying the joining outside IL and removing Chukat Balak joining.
+    * except year type 4,11,12 where you should remove Behar Bechukotai in year type 4 and Matot Mas'ei in year types 11,12
+    */
+    final static byte[][] SidraJoin =
+    {//lsb to msb : 22, 27, 29, 32, 39, 42, 51
         { //Diaspora
-            {
-                1, 1, 1, 1, 0, 1, 1
-            },//1
-            
-            {
-                1, 1, 1, 1, 0, 1, 0
-            },//2
-            
-            {
-                1, 1, 1, 1, 1, 1, 1
-            },//3
-            
-            {
-                1, 1, 1, 1, 0, 1, 0
-            },//4
-            
-            {
-                1, 1, 1, 1, 1, 1, 1
-            },//5
-            
-            {
-                0, 1, 1, 1, 0, 1, 0
-            },//6
-            
-            {
-                1, 1, 1, 1, 0, 1, 1
-            },//7
-            
-            {
-                0, 0, 0, 0, 1, 1, 1
-            },//8
-            
-            {
-                0, 0, 0, 0, 0, 0, 0
-            },//9
-            
-            {
-                0, 0, 0, 0, 0, 1, 1
-            },//10
-            
-            {
-                0, 0, 0, 0, 0, 1, 0
-            },//11
-            
-            {
-                0, 0, 0, 0, 0, 1, 0
-            },//12
-            
-            {
-                0, 0, 0, 0, 0, 0, 1
-            },//13
-            
-            {
-                0, 0, 0, 0, 1, 1, 1
-            } //14
+                0x6f //1, 1, 1, 1, 0, 1, 1
+            ,//1
+                0x2f //1, 1, 1, 1, 0, 1, 0
+            ,//2
+                0x7f //1, 1, 1, 1, 1, 1, 1
+            ,//3
+                0x2f //1, 1, 1, 1, 0, 1, 0
+            ,//4
+                0x7f //1, 1, 1, 1, 1, 1, 1
+            ,//5
+                0x2e //0, 1, 1, 1, 0, 1, 0
+            ,//6
+                0x6f //1, 1, 1, 1, 0, 1, 1
+            ,//7
+                0x70 //0, 0, 0, 0, 1, 1, 1
+            ,//8
+                0x00 //0, 0, 0, 0, 0, 0, 0
+            ,//9
+                0x60 //0, 0, 0, 0, 0, 1, 1
+            ,//10
+                0x20 //0, 0, 0, 0, 0, 1, 0
+            ,//11
+                0x20 //0, 0, 0, 0, 0, 1, 0
+            ,//12
+                0x40 //0, 0, 0, 0, 0, 0, 1
+            ,//13
+                0x70 //0, 0, 0, 0, 1, 1, 1
+             //14
         },
         {
-            {
-                1, 1, 1, 1, 0, 1, 1
-            },//1
-            
-            {
-                1, 1, 1, 1, 0, 1, 0
-            },//2
-            
-            {
-                1, 1, 1, 1, 0, 1, 1
-            },//3
-            
-            {
-                1, 1, 1, 0, 0, 1, 0
-            },//4
-            
-            {
-                1, 1, 1, 1, 0, 1, 1
-            },//5
-            
-            {
-                0, 1, 1, 1, 0, 1, 0
-            },//6
-            
-            {
-                1, 1, 1, 1, 0, 1, 1
-            },//7
-            
-            {
-                0, 0, 0, 0, 0, 1, 1
-            },//8
-            
-            {
-                0, 0, 0, 0, 0, 0, 0
-            },//9
-            
-            {
-                0, 0, 0, 0, 0, 1, 1
-            },//10
-            
-            {
-                0, 0, 0, 0, 0, 0, 0
-            },//11
-            
-            {
-                0, 0, 0, 0, 0, 0, 0
-            },//12
-            
-            {
-                0, 0, 0, 0, 0, 0, 1
-            },//13
-            
-            {
-                0, 0, 0, 0, 0, 1, 1
-            } //14
+                0x6f //1, 1, 1, 1, 0, 1, 1
+            ,//1
+                0x2f //1, 1, 1, 1, 0, 1, 0
+            ,//2
+                0x6f //1, 1, 1, 1, 0, 1, 1
+            ,//3
+                0x27//1, 1, 1, 0, 0, 1, 0
+            ,//4
+                0x6f //1, 1, 1, 1, 0, 1, 1
+            ,//5
+                0x2e //0, 1, 1, 1, 0, 1, 0
+            ,//6
+                0x6f //1, 1, 1, 1, 0, 1, 1
+            ,//7
+                0x60 //0, 0, 0, 0, 0, 1, 1
+            ,//8
+                0x00 //0, 0, 0, 0, 0, 0, 0
+            ,//9
+                0x60 //0, 0, 0, 0, 0, 1, 1
+            ,//10
+                0x00 //0, 0, 0, 0, 0, 0, 0
+            ,//11
+                0x00 //0, 0, 0, 0, 0, 0, 0
+            ,//12
+                0x40 //0, 0, 0, 0, 0, 0, 1
+            ,//13
+                0x60 //0, 0, 0, 0, 0, 1, 1
+             //14
         }
     };
     final static String[][] sidra =
@@ -194,12 +154,12 @@ public class TorahReading
             //42-49
             "Matot", "Mas\'ei", "Devarim", "Vaetchanan", "Ekev", "Re\'eh", "Shoftim", "Ki-Tetze",
             //50-54
-            "Ki-Tavo", "Nitzavim", "Vayelech", "Ha\'azinu", "Vezot Habracha"
+            "Ki-Tavo", "Nitzavim", "Vayelech", "Ha\'azinu", "Vezot Haberacha"
         }
 
     };
 
-    final static String[] special_shabat =
+    /*final static String[] special_shabat =
     {
         "שקלים",
         "זכור",
@@ -207,8 +167,9 @@ public class TorahReading
         "החודש",
         "הגדול",
         "שירה",
-        "נחמו"
-    };
+        "נחמו",
+        "תשובה"
+    };*/
     private static final int SHABAT_SHKALIM = 0;
     private static final int SHABAT_ZAKHOR = 1;
     private static final int SHABAT_PARA = 2;
@@ -216,13 +177,14 @@ public class TorahReading
     private static final int SHABAT_HAGADOL = 4;
     private static final int SHABAT_SHIRA = 5;
     private static final int SHABAT_NACHAMU = 6;
+    private static final int SHABAT_TSHUVA = 7;
 
-    public static String parshiot4(YDate h)
+    public static String parshiot4(YDate h, YDateLanguage lang)
     {
         YDate tweaked = YDate.createFrom(h);
         if (getShabbatBereshit(h.hd.yearLength(), h.hd.yearFirstDay()) + 15 * 7 == h.hd.daysSinceBeginning())
         {
-            return special_shabat[SHABAT_SHIRA];
+            return lang.getSpecialShabbat(SHABAT_SHIRA);
         }
         if (h.hd.dayInWeek() == 7)
         {
@@ -231,11 +193,11 @@ public class TorahReading
             {
                 if (tweaked.hd.dayInMonth() <= 7)
                 {
-                    return special_shabat[SHABAT_HACHODESH];
+                    return lang.getSpecialShabbat(SHABAT_HACHODESH);
                 }
                 if (h.hd.dayInMonth() < 15 && h.hd.dayInMonth() > 7)
                 {
-                    return special_shabat[SHABAT_HAGADOL];
+                    return lang.getSpecialShabbat(SHABAT_HAGADOL);
                 }
             }
             if (tweaked.hd.monthID() == YDate.JewishDate.M_ID_ADAR
@@ -243,15 +205,15 @@ public class TorahReading
             {
                 if (tweaked.hd.dayInMonth() <= 7)
                 {
-                    return special_shabat[SHABAT_SHKALIM];
+                    return lang.getSpecialShabbat(SHABAT_SHKALIM);
                 }
                 if (h.hd.dayInMonth() < 14 && h.hd.dayInMonth() > 7)
                 {
-                    return special_shabat[SHABAT_ZAKHOR];
+                    return lang.getSpecialShabbat(SHABAT_ZAKHOR);
                 }
                 if (h.hd.dayInMonth() > 16)
                 {
-                    return special_shabat[SHABAT_PARA];
+                    return lang.getSpecialShabbat(SHABAT_PARA);
                 }
             }
             int shabbat_nachamu = h.hd.yearFirstDay();
@@ -260,8 +222,16 @@ public class TorahReading
 
             if (h.hd.daysSinceBeginning() == shabbat_nachamu)
             {
-                return special_shabat[SHABAT_NACHAMU];
+                return lang.getSpecialShabbat(SHABAT_NACHAMU);
             }
+            int shabbat_tshuva = h.hd.yearFirstDay();
+            shabbat_tshuva += YDate.JewishDate.calculateDayInYearByMonthId(h.hd.yearLength(), JewishDate.M_ID_TISHREI, 9);
+            shabbat_tshuva = YDate.getPrevious(YDate.SATURDAY, shabbat_tshuva);
+            if (h.hd.daysSinceBeginning() == shabbat_tshuva)
+            {
+                return lang.getSpecialShabbat(SHABAT_TSHUVA);
+            }
+
         }
         return "";
     }
@@ -333,13 +303,13 @@ public class TorahReading
         int diy = h.dayInYear();
         int ydiw = h.yearFirstDay() % 7;
         //int diw = (diy + ydiw) % 7;
-        int simhat_torah = diaspora ? 23 : 22;
-        int succot = 15;
+        int simhat_torah = diaspora ? 23 : 22;//22 in tishrei or 23 in tishrei.
+        int succot = 15;//15 in tishrei.
         int day_type = getDayType(h);
         int pnum = 0;
-        if (diy + 1 == simhat_torah)
+        if ((diy + 1) == simhat_torah) //diy + 1 is day in month of tishrei. so if we are in simchat torah...
         {
-            pnum = 54;
+            pnum = 54;//Vezot Haberacha
         }
         else
         {
@@ -350,9 +320,9 @@ public class TorahReading
             }
             else if (((day_type & HOL_DAY_MONDAY_THURSDAY) != 0 && (!(diaspora && (day_type & REGALIM_DIASPORA) != 0))))
             {
-                if (diy + 1 <= simhat_torah && diy + 1 >= succot)
+                if ((diy + 1) <= simhat_torah && (diy + 1) >= succot)
                 {
-                    pnum = 54;
+                    pnum = 54;//Vezot Haberacha
                 }
                 else
                 {
@@ -362,7 +332,7 @@ public class TorahReading
                         pnum = sidra_array[sat / 7];
                         if (pnum == 0 && (sat / 7) == 2)
                         {
-                            pnum = 54;
+                            pnum = 54;//Vezot Haberacha
                         }
                         sat += 7;
                     }
@@ -415,7 +385,7 @@ public class TorahReading
             }
             else
             {
-                lstr = ", ";
+                lstr += ", ";
             }
             if ((day_type & ROSH_HODESH) !=0)
             {
@@ -428,7 +398,12 @@ public class TorahReading
         }
         return lstr;
     }
-
+/**
+ * This method gives you the upcoming parasha. it is useful to know what parasha we should start studying.
+ * @param h the hebrew date object
+ * @param diaspora are we in the diaspora?
+ * @return the string of the parasha.
+ */
     public static String GetSidra(JewishDate h, boolean diaspora)
     {
         int diy = h.dayInYear();
@@ -437,32 +412,33 @@ public class TorahReading
         int succot = 15;
         int day_type = getDayType(h);
         int pnum = 0;
-        if (diy + 1 == simhat_torah)
+        if ((diy + 1) == simhat_torah)
         {
-            pnum = 54;
+            pnum = 54;//Vezot Haberacha
         }
         else
         {
             byte[] sidra_array = calculateSidraArray(h.yearLength(), h.yearFirstDay(), diaspora);
-            if ((day_type & SHABBAT_DAY) != 0)
+            if ((day_type & SHABBAT_DAY) != 0) // we are in shabbat
             {
                 pnum = sidra_array[diy / 7];
             }
             if (pnum == 0)
             {
-                if (diy + 1 <= simhat_torah && diy + 1 >= succot)
+                if ((diy + 1) <= simhat_torah && (diy + 1) >= succot)
                 {
-                    pnum = 54;
+                    pnum = 54;//Vezot Haberacha
                 }
                 else
                 {
-                    int sat = YDate.getNext(YDate.SATURDAY, diy + ydiw) - ydiw;
+                    int sat = YDate.getNext(YDate.SATURDAY, diy + ydiw) - ydiw;// get the day in year of next saturday.
                     while (pnum == 0)
                     {
                         pnum = sidra_array[sat / 7];
-                        if (pnum == 0 && (sat / 7) == 2)
+                        //if the next saturday is in succot, it means we are already in Vezot Haberacha.
+                        if (pnum == 0 && (sat / 7) == 2)//sat>=14 && sat <=20
                         {
-                            pnum = 54;
+                            pnum = 54;//Vezot Haberacha
                         }
                         sat += 7;
                     }
@@ -484,13 +460,15 @@ public class TorahReading
         }
         return lstr;
     }
-    static byte[][][] sidra_reading = new byte[2][JewishDate.N_YEAR_TYPES][];//[diaspora][year_type][shabat]
+    static byte[][][] sidra_reading = new byte[2][JewishDate.N_YEAR_TYPES][];//[diaspora][year_type][shabbat]
+    //reverse access:
+    static byte[][][] sidra_to_shabbat = new byte[2][JewishDate.N_YEAR_TYPES][54];//[diaspora][year_type][sidra]
 
-    private static int getNextJoinPointer(byte[] joining, int jp)
+    private static int getNextJoinPointer(byte joining, int jp)
     {
-        for (; jp < joining.length; ++jp)
+        for (; jp < double_reading.length; ++jp)
         {
-            if (joining[jp] == 1)
+            if ((joining&(1<<jp)) != 0)
             {
                 break;
             }
@@ -502,30 +480,43 @@ public class TorahReading
     {
         if (jp >= double_reading.length)
         {
-            return 55;
+            return 55;//return invalid parasha. valid number is only in the range 1..54
         }
         return double_reading[jp];
     }
-
+/**
+ * this method calculate all the parashot of a given year.
+ * there are 14 possible year types, and for each one of the 14 we have different settings for diaspora.
+ * the year can start in 4 out of 7 possible day in week (not in sunday, wednesday,friday). the year length might be one of the following: 353,354,355,383,384,385.
+ * but some of the combinations are not possible so we don't have 24(6*4) combination, we only have 14.
+ * the calculations of this method are cached for rapid access.
+ * @param year_length
+ * @param year_first_day
+ * @param diaspora
+ * @return 
+ */
     private static byte[] calculateSidraArray(int year_length, int year_first_day, boolean diaspora)
     {
-
-        int year_diw = year_first_day % 7; // can be only 1 2 4 6 (+1 = 2 3 5 7)
-        int ldt = YDate.JewishDate.ld_year_type(year_length, year_diw + 1);
+        int year_diw = year_first_day % 7; // can be only 1(+1=MON) 2(+1=TUE) 4(+1=THU) 6(+1=SAT) 
+        
+        
+        int ldt = YDate.JewishDate.ld_year_type(year_length, year_diw + 1);//the year type out of 14 possible types ( the method gives us range of 1..14)
         if (sidra_reading[diaspora ? 0 : 1][ldt - 1] != null)
         {
             return sidra_reading[diaspora ? 0 : 1][ldt - 1];
         }
-        byte[] joining = SidraJoin[diaspora ? 0 : 1][ldt - 1];
+        byte joining = SidraJoin[diaspora ? 0 : 1][ldt - 1];
 
         int s = 0;
 
         int diy = YDate.getNext(YDate.SATURDAY, year_diw) - year_diw;
-        int shabats = (year_length - (diy) + 6) / 7;
+        int shabats = (year_length - (diy) + 6) / 7;//number of shabbats in the given year.
         shabats++; // one for the next year
         byte[] reading = new byte[shabats];
         sidra_reading[diaspora ? 0 : 1][ldt - 1] = reading;
-        if ((year_diw >> 2) == 0) //if monday or tuesday - pat bag
+        //the following if is like if (year_diw  == YDate.MONDAY || year_diw  == YDate.TUESDAY)
+        // or like doing if (year_diw > 2)
+        if ((year_diw >> 2) == 0) //if the year started in monday or tuesday - pat bag
         {
             reading[s] = 52;//Vayelech
             ++s;
@@ -551,9 +542,9 @@ public class TorahReading
             ++s;
             diy += 21;
         }
-        int pesah_day = YDate.JewishDate.calculateDayInYearByMonthId(year_length, JewishDate.M_ID_NISAN, 15);
-        int pesah_length = diaspora ? 8 : 7;
-        int azeret_day = 50 + pesah_day;
+        int pesah_day = YDate.JewishDate.calculateDayInYearByMonthId(year_length, JewishDate.M_ID_NISAN, 15); // day in year of pessach night.
+        int pesah_length = diaspora ? 8 : 7;//how much days in pessach?
+        int azeret_day = 50 + pesah_day;//SHAVOUT day in year.
         int azeret_length = diaspora ? 2 : 1;
         int tr = 1;
         //now s points to shabat bereshit
@@ -591,12 +582,81 @@ public class TorahReading
         }
         return reading;
     }
-
+    private static byte[] generateSidraToShabbatArray(int year_length, int year_first_day, boolean diaspora)
+    {
+        int year_diw = year_first_day % 7; // can be only 1 2 4 6 (+1 = 2 3 5 7)
+        int ldt = YDate.JewishDate.ld_year_type(year_length, year_diw + 1);
+        byte[] reading = calculateSidraArray(year_length, year_first_day, diaspora);
+        byte[] rev_access = sidra_to_shabbat[diaspora ? 0 : 1][ldt - 1];
+        if (rev_access[0]!=0)
+            return rev_access;
+        rev_access[54-1]=-1;//Vezot Habracha.
+        int r=0;
+        for (int i=0; i< reading.length;)
+        {
+            if (reading[i]>0)
+            {
+                rev_access[reading[i]-1]=(byte)i;
+            }
+            else if(reading[i]<0)//joined
+            {
+                rev_access[-reading[i]-1]=(byte)i;
+                rev_access[-reading[i]]=(byte)i;
+            }
+        }
+        return rev_access;        
+    }
+    
     public static int getShabbatBereshit(int year_length, int year_first_day)
     {
         int bereshit_saturday = year_first_day;
         bereshit_saturday += YDate.JewishDate.calculateDayInYearByMonthId(year_length, JewishDate.M_ID_TISHREI, 23);
         bereshit_saturday = YDate.getNext(YDate.SATURDAY, bereshit_saturday);
         return bereshit_saturday;
+    }
+    /**
+     * return the Vayelech shabbat that is at the end of this year or at the beginning of the next year.
+     * @param year_length
+     * @param year_first_day
+     * @return 
+     */
+    public static int getLastShabbatVayelech(int year_length, int year_first_day)
+    {
+        return getFirstShabbatVayelech(year_first_day + year_length);
+    }
+    public static int getFirstShabbatVayelech(int year_first_day)
+    {
+        int year_diw= (year_first_day)%7;
+        if ((year_diw >> 2) == 0) //if the year starts in monday or tuesday - pat bag
+        {
+            return YDate.getNext(YDate.SATURDAY, year_first_day);
+        }
+        return YDate.getPrevious(YDate.SATURDAY, year_first_day - 1);
+    }
+    /**
+     * UNTESTED. should give you day in "beginning count" for specific sidra.
+     * Vaelech might be twice in year or just once or zero. if there are two shabbats Vayelech,
+     * it gives the one in the end of the year.
+     * there are two methods to get the desired Vayelech shabbat.
+     * @param sidra 1..54
+     * @param year_length
+     * @param year_first_day
+     * @param diaspora
+     * @return -1 if not found. (might happen with "Vayelech")
+     */
+    public static int getParashaDayInYear(int sidra,int year_length, int year_first_day, boolean diaspora)
+    {
+        if (sidra < 1 || sidra > 54)
+            return -1;
+        if (sidra==54)
+        {
+            // Simchat torah is in Tishrey 22 in Israel or 23 in Galuyot.
+            // but while day in month starts from 1, our day in year count starts from 0.
+            return year_first_day + (diaspora ? 22 : 21); 
+        }
+        int sat_num = generateSidraToShabbatArray(year_length,year_first_day,diaspora)[sidra-1];
+        if (sat_num<0)
+            return -1;
+        return YDate.getNext(YDate.SATURDAY, year_first_day) + sat_num * 7;
     }
 }

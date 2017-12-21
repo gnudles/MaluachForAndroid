@@ -1,7 +1,6 @@
 package besiyata.maluach;
 
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -13,9 +12,8 @@ import android.view.MotionEvent;
 import android.view.GestureDetector.OnGestureListener;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Scroller;
 
-import besiyata.gp.EventHandler;
+import besiyata.GP.EventHandler;
 import besiyata.YDate.*;
 
 /**
@@ -69,6 +67,9 @@ public class YDateView extends View implements OnGestureListener {
         mLanguage=language;
     }
 
+    public boolean getHebrewMonthAlign() {
+        return mHebrewMonthAlign;
+    }
     public void setHebrewMonthAlign(boolean heb) {
         mHebrewMonthAlign = heb;
         dateCursorUpdated();
@@ -203,7 +204,8 @@ public class YDateView extends View implements OnGestureListener {
         return mSelectedCell;
     }
 
-    private final int m_cellSpacing = 2;
+    private int m_cellSpacing = 0;
+
     private int m_cellWidth, m_cellHeight, m_BoardHeight;
     private int m_cellHeaderH;
     private int m_left, m_top;
@@ -212,7 +214,8 @@ public class YDateView extends View implements OnGestureListener {
     private void invalidateMeasurements() {
         int w = getWidth();
         int h = getHeight();
-
+        m_cellSpacing = Math.max(2,3*Math.min(w,h)/256);
+        m_cellSpacing &=~1;
         m_cellWidth = (w - 8 * m_cellSpacing) / 7;
         m_left = (w - 6 * m_cellSpacing - 7 * m_cellWidth) / 2;
 
@@ -287,6 +290,9 @@ public class YDateView extends View implements OnGestureListener {
         public boolean isToday;
         public boolean jewishDay;
         public boolean evnet;
+        public boolean erevHag;
+        public boolean tzeitHag;//if both  erevHag and tzeitHag is true then it's a Hag.
+
     }
 
     public interface StyleDraw {
@@ -351,7 +357,7 @@ public class YDateView extends View implements OnGestureListener {
                 attr.after = (cell_day >= mMonthLength);
                 event = mDateEvents.getEvent(day_in_year);
                 attr.evnet = event != 0;
-
+                attr.jewishDay = mHebrewMonthAlign;
 
                 String day_txt;
                 if (mShowBothInCell) {
@@ -446,6 +452,9 @@ public class YDateView extends View implements OnGestureListener {
     @Override
     public boolean onDown(MotionEvent e) {
         //System.out.println("onDown event");
+        updateSelection(getCellByPixels((int) e.getX(), (int) e.getY()));
+        if (dateChanged != null) dateChanged.trigger(this);
+        invalidate();
 
         return true;
     }
@@ -497,10 +506,7 @@ public class YDateView extends View implements OnGestureListener {
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        System.out.println("onSingleTapUp");
-        updateSelection(getCellByPixels((int) e.getX(), (int) e.getY()));
-        if (dateChanged != null) dateChanged.trigger(this);
-        invalidate();
+        //System.out.println("onSingleTapUp");
         return true;
     }
 

@@ -4,6 +4,8 @@
     <string name="btn_prev_character">►</string>
     <string name="alignment_left">שמאל</string>
     <string name="alignment_right">ימין</string>
+    <string name="right_aligned">ימין לשמאל</string>
+    <string name="gregorian_display">תצוגה לעזית</string>
     <string name="app_name">מלוח</string>
     <string name="psalms">תהלים</string>
     <string name="date_type_greg">לועזי</string>
@@ -36,4 +38,8 @@
     <string name="week_day_short_tue">ג</string>
     <string name="week_day_short_wed">ד</string>
     <string name="ydate_lang">he</string>
+    <string name="btn_next_character">◄</string>
+    <string name="close">סגור</string>
+    <string name="choose">בחר</string>
+    <string name="compass">מצפן</string>
 </resources>

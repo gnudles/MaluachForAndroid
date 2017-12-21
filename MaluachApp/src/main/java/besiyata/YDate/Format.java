@@ -1,4 +1,17 @@
 /* This is free and unencumbered software released into the public domain.
+ *
+ * THIS SOFTWARE IS PROVIDED THE CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY 
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; BUSINESS
+ * INTERRUPTION; OR ANY SPIRITUAL DAMAGE) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package besiyata.YDate;
 
@@ -27,18 +40,30 @@ public class Format
         }
         return stime;
     }
+    private static char getSingleDigitChar(int d)
+    {
+        return (char)('0'+(d%10));
+    }
+    /**
+     * Colon prefixed two digits string
+     * @param x
+     * @return 
+     */
     private static String getc00String(int x)
     {
-        
-        char a=(char)('0'+x/10);
-        char b=(char)('0'+x%10);
+        char a = getSingleDigitChar(getTenthsDigit(x));
+        char b = getSingleDigitChar(getOnesDigit(x));
         return (":"+a)+b;
     }
-    private static String get00String(int x)
+    /**
+     * Two digits string
+     * @param x
+     * @return 
+     */
+    public static String get00String(int x)
     {
-        
-        char a=(char)('0'+x/10);
-        char b=(char)('0'+x%10);
+        char a = getSingleDigitChar(getTenthsDigit(x));
+        char b = getSingleDigitChar(getOnesDigit(x));
         return (""+a)+b;
     }
     public static String GDateString(int y,int m,int d)
@@ -135,6 +160,33 @@ public class Format
         out+=HebIntSubString(n,true,true);
         
         return out;
+    }
+    public static int getOnesDigit(int num)
+    {
+        return num%10;
+    }
+    public static int getTenthsDigit(int num)
+    {
+        return (num/10)%10;
+    }
+    public static int getHundredsDigit(int num)
+    {
+        return (num/100)%10;
+    }
+    public static String numSuffix(int num) {
+        if (getTenthsDigit(num) == 1) {
+            return "th";
+        }
+        switch (getOnesDigit(num)) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
     }
 
 }

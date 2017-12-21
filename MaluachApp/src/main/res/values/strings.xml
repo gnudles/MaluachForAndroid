@@ -5,6 +5,8 @@
     <string name="date_type_heb">Hebrew</string>
     <string name="alignment_right">Right</string>
     <string name="alignment_left">Left</string>
+    <string name="right_aligned">Right To Left</string>
+    <string name="gregorian_display">Gregorian oriented</string>
     <string name="today">Today</string>
     <string name="week_day_full_sun">Sunday</string>
     <string name="week_day_full_mon">Monday</string>
@@ -36,5 +38,9 @@
 
     <string name="btn_prev_character">◄</string>
     <string name="ydate_lang">en</string>
+    <string name="btn_next_character">►</string>
+    <string name="close">close</string>
+    <string name="choose">choose</string>
+    <string name="compass">Compass</string>
 
 </resources>

@@ -6,37 +6,54 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:orientation="vertical"
-    tools:context="besiyata.maluach.MainActivity">
+    tools:context="besiyata.maluach.MaluachMainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Switch
-            android:id="@+id/switchHebGreg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff="@string/date_type_greg"
-            android:textOn="@string/date_type_heb"
-            android:checked="true"/>
-        <Switch
-            android:id="@+id/switchRTL"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewHeb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textOff="@string/alignment_left"
-            android:textOn="@string/alignment_right"
-            android:checked="true"/>
+            android:background="#ff669976"
+            android:paddingEnd="14dp"
+            android:paddingStart="14dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textViewGreg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff71b288"
+            android:paddingEnd="14dp"
+            android:paddingStart="14dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textViewEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff99aa89"
+            android:paddingEnd="14dp"
+            android:paddingStart="14dp"
+            android:textSize="20sp" />
     </LinearLayout>
 
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:layoutDirection="@integer/btn_direction"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
         <Button
             android:id="@+id/prevYearBtn"
             android:layout_width="30sp"
@@ -45,6 +62,7 @@
             android:onClick="previousYearClick"
             android:text="@string/btn_prev_character"
             android:textSize="18sp" />
+
         <Button
             android:id="@+id/nextYearBtn"
             android:layout_width="90sp"
@@ -61,21 +79,13 @@
             android:onClick="previousMonthClick"
             android:text="@string/btn_prev_character"
             android:textSize="18sp" />
+
         <Button
             android:id="@+id/nextMonthBtn"
-            android:layout_width="90sp"
+            android:layout_width="102sp"
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_default_small"
             android:textSize="18sp" />
-        <Button
-            android:id="@+id/jumpToday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_default_small"
-            android:onClick="jumpToToday"
-            android:text="@string/today"
-             />
-
 
 
 
@@ -87,37 +97,28 @@
         android:textSize="20sp" />-->
 
 
-
-    <besiyata.maluach.YDateView
-        android:id="@+id/ydateView"
-        android:layout_width="match_parent"
-        android:layout_height="218dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        app:rightToLeft="true"
-        app:hebrewMonth="true"
-        app:selectionColor="#33b5e5"
-        app:backgroundColor="#33b5e5"
-        app:frameColor="#33b5e5" />
-
-    <TextView
-        android:id="@+id/textViewHeb"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp" />
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewGreg"
-        android:textSize="20sp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewEvent"
-        android:textSize="20sp" />
+        <besiyata.maluach.YDateView
+            android:id="@+id/ydateView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:paddingTop="0dp"
+            app:backgroundColor="#33b5e5"
+            app:frameColor="#33b5e5"
+            app:hebrewMonth="true"
+            app:rightToLeft="true"
+            app:selectionColor="#33b5e5" />
+    </LinearLayout>
 
 
 </LinearLayout>

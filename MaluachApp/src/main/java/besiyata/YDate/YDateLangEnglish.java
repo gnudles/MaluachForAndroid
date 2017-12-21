@@ -1,7 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* This is free and unencumbered software released into the public domain.
+ *
+ * THIS SOFTWARE IS PROVIDED THE CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY 
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; BUSINESS
+ * INTERRUPTION; OR ANY SPIRITUAL DAMAGE) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package besiyata.YDate;
 
@@ -31,19 +41,25 @@ public class YDateLangEnglish extends YDateLanguage
                  "October",
                  "November",
                  "December"};
+    static final String ShortGregMonthTokens []=
+    {"Jan", 
+                 "Feb",
+                 "Mar",
+                 "Apr",
+                 "May",
+                 "Jun",
+                 "Jul",
+                 "Aug",
+                 "Sep",
+                 "Oct",
+                 "Nov",
+                 "Dec"};
 
     public static final String[] zodiac_names =
             {
                     "Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
             };
-    /*
-    fire: Aries Leo Sagittarius
-    earth: Taurus Virgo Capricorn
-    wind: Gemini Libra Aquarius
-    water: Cancer Scorpio Pisces
-       fire doesn't connect with water
-       earth doesn't connect with wind
-    */
+
     public static final String[] four_elements_names =
             {
                     "fire", "earth", "wind", "water"
@@ -52,6 +68,17 @@ public class YDateLangEnglish extends YDateLanguage
             {
                     "Mercury","Moon","Saturn","Jupiter","Mars","Sun","Venus"
             };
+    final static String[] special_shabbat =
+    {
+        "Shkalim",
+        "Zakhor",
+        "Parah",
+        "HaChodesh",
+        "HaGadol",
+        "Shira",
+        "Nachamu",
+        "Tshuva"
+    };
 
     @Override
     public String getWeekToken(int token)
@@ -69,6 +96,11 @@ public class YDateLangEnglish extends YDateLanguage
     public String getGregMonthToken(int token)
     {
         return GregMonthTokens[token];
+    }
+    @Override
+    public String getShortGregMonthToken(int token)
+    {
+        return ShortGregMonthTokens[token];
     }
 
     @Override
@@ -112,5 +144,20 @@ public class YDateLangEnglish extends YDateLanguage
     @Override
     public String FormatPeriod(int monthId) {
         return getHebMonthToken(monthId)+" Period";
+    }
+
+    @Override
+    public String getShortWeekToken(int token) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getShortHebMonthToken(int token) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSpecialShabbat(int token) {
+        return special_shabbat[token];
     }
 }
