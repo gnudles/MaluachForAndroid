@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="besiyata.maluach.MaluachMainActivity">
+    tools:context="kapandaria.maluach.MaluachMainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,7 +105,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <besiyata.maluach.YDateView
+        <kapandaria.maluach.YDateView
             android:id="@+id/ydateView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

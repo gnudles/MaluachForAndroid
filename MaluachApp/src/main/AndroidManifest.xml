@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="besiyata.maluach">
+    package="kapandaria.maluach">
     <uses-permission android:name="android.permission.READ_CALENDAR" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MaluachMainActivity">
+        <activity android:name="kapandaria.maluach.MaluachMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PsalmsActivity">
+        <activity android:name="kapandaria.maluach.PsalmsActivity"
+            android:label="@string/psalms">
             <intent-filter>
 
                 <category android:name="android.intent.category.ALTERNATIVE" />
             </intent-filter>
         </activity>
-        <activity android:name=".CompassActivity">
+        <activity android:name="kapandaria.maluach.CompassActivity"
+            android:label="@string/compass"
+            android:screenOrientation="portrait">
             <intent-filter>
 
                 <category android:name="android.intent.category.ALTERNATIVE" />
@@ -38,7 +41,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/maluach_calendar_widget_info" />
         </receiver> -->
-        <receiver android:name=".MaluachTimeWidget">
+        <receiver android:name="kapandaria.maluach.MaluachTimeWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
