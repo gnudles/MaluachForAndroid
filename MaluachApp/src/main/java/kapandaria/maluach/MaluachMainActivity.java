@@ -251,6 +251,7 @@ public class MaluachMainActivity extends Activity {
         });
 		Typeface font = Typeface.createFromAsset(getAssets(), "fonts/StamAshkenazCLM.ttf");
         txtView.setTypeface(font);
+        txtViewEvent.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/KeterAramTsova.ttf"));
         ydateView = (YDateView) findViewById(R.id.ydateView);
         ydateView.setLanguage(language);
         ydateView.dateClicked().addListener(_showInfo);

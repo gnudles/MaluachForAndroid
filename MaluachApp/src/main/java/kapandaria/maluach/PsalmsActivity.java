@@ -4,13 +4,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
+import android.text.Layout;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
+import android.text.style.BulletSpan;
+import android.text.style.LeadingMarginSpan;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,11 +25,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.XMLReader;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import kapandaria.YDate.YDateLanguage;
 
@@ -41,13 +55,15 @@ public class PsalmsActivity extends Activity {
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayShowTitleEnabled(false);
         setContentView(R.layout.psalms_layout);
-        //Typeface font = Typeface.createFromAsset(getAssets(), "fonts/SILEOT.ttf");
-        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/SILEOT.ttf");
+
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/EzraSILSR.ttf");
+        //Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Cardo-Regular.ttf");
         settings=getPreferences(MODE_PRIVATE);
         setFontSize(settings.getFloat("psalms.text_size_mm",5));
         ((TextView) findViewById(R.id.textViewPsalms)).setTypeface(font);
 
-        ((TextView) findViewById(R.id.textViewPsalms)).setMovementMethod(new ScrollingMovementMethod());
+        //((TextView) findViewById(R.id.textViewPsalms)).setMovementMethod(new ScrollingMovementMethod());
+        ((TextView) findViewById(R.id.textViewPsalms)).setIncludeFontPadding(true);
 
     }
 
@@ -59,8 +75,10 @@ public class PsalmsActivity extends Activity {
         if (a<1)
             a=1;
         current_chapter = a;
-        ((TextView) findViewById(R.id.textViewPsalms)).setText(getPsalmText(current_chapter), TextView.BufferType.SPANNABLE);
-        ((TextView) findViewById(R.id.textViewPsalms)).scrollTo(0,0);
+        Spanned psalm_span=getPsalmText(current_chapter);
+        ((TextView) findViewById(R.id.textViewPsalms)).setText(psalm_span, TextView.BufferType.SPANNABLE);
+        //((TextView) findViewById(R.id.textViewPsalms)).scrollTo(0,0);
+        ((ScrollView)findViewById(R.id.scroller)).scrollTo(0,0);
         //((Button) findViewById(R.id.psalm_chapter)).setText(YDateLanguage.getLanguageEngine(YDateLanguage.Language.HEBREW).getNumber(current_chapter));
         if (psalm_menu != null)
             (psalm_menu.findItem(R.id.psalm_chapter_menu_item)).setTitle(YDateLanguage.getLanguageEngine(YDateLanguage.Language.HEBREW).getNumber(current_chapter));
@@ -69,11 +87,11 @@ public class PsalmsActivity extends Activity {
     }
     public void nextChapter()
     {
-        setCurrentChapter(current_chapter+1);
+        setCurrentChapter((current_chapter%150)+1);
     }
     public void prevChapter()
     {
-        setCurrentChapter(current_chapter-1);
+        setCurrentChapter((current_chapter+148)%150+1);
     }
     private void fixNumberPickerBug(NumberPicker np)
     {
@@ -100,7 +118,7 @@ public class PsalmsActivity extends Activity {
         np.setMinValue(1);
         np.setMaxValue(150);
         np.setValue(current_chapter);
-        np.setWrapSelectorWheel(false);
+        np.setWrapSelectorWheel(true);
         np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         np.setFormatter(new NumberPicker.Formatter() {
             @Override
@@ -145,21 +163,40 @@ public class PsalmsActivity extends Activity {
         settings.edit().putFloat("psalms.text_size_mm",text_size_mm).apply();
         ((TextView) findViewById(R.id.textViewPsalms)).setTextSize(TypedValue.COMPLEX_UNIT_MM,text_size_mm);
     }
+    Spanned formatPsalmInner(String text)
+    {
+        String outputHtml=text.replace("-","־")
+                .replace("{","<small><font color='#0077bb'>")
+                .replace("}","</font></small>")
+                .replace("(","<small><font color='#888888'>")
+                .replace(")","</font></small>")
+                .replace(":","\u05c3<br/>");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(outputHtml,Html.FROM_HTML_MODE_COMPACT);
+        }
+        else
+        {
+            return Html.fromHtml(outputHtml);
+        }
+    }
+
+    Spanned formatPsalm(String text)
+    {
+        SpannableStringBuilder builder =new SpannableStringBuilder(formatPsalmInner(text));
+        builder.setSpan(new LeadingMarginSpan.Standard(8),0,builder.length(),0);
+        return builder;
+
+    }
     Spanned getPsalmText(int chapter)
     {
+
         try {
             InputStream inputStream = getAssets().open("psalms/" + String.valueOf(chapter) + ".txt");
             byte [] b = new byte[inputStream.available()];
             inputStream.read(b);
-            String outputHtml=new String(b).replace("-","־").replace("{","<small><font color='#0077bb'>").replace("}","</font></small>").
-                    replace("(","<small><font color='#888888'>").replace(")","</font></small>").replace(":",":<br/>");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                return Html.fromHtml(outputHtml,Html.FROM_HTML_MODE_COMPACT);
-            }
-            else
-            {
-                return Html.fromHtml(outputHtml);
-            }
+            return formatPsalm(new String(b));
+
+
         }
         catch (IOException e)
         {
