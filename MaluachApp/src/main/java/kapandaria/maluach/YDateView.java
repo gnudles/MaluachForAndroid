@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.text.TextPaint;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.GestureDetector.OnGestureListener;
@@ -49,9 +50,9 @@ public class YDateView extends View implements OnGestureListener {
     private int mBackgroundColor;
     private int mSelectionColor;
     private int mSelectedCell;
-    private int mZeroCellDay;
-    private int mHdYearDay;
-    private int mFirstDayCell;
+    private int mZeroCellDay;//days since begginning of the earliest cell that is shown(the first gray)
+    private int mHdYearDay;//days since begginning of hebrew year.
+    private int mFirstDayCell;//first cell of our month from the view beggining (0..41)
     private int mLastMonthLength;
     private int mMonthLength;
     private int mTodayDay;
@@ -219,7 +220,7 @@ public class YDateView extends View implements OnGestureListener {
         m_cellWidth = (w - 8 * m_cellSpacing) / 7;
         m_left = (w - 6 * m_cellSpacing - 7 * m_cellWidth) / 2;
 
-        m_cellHeaderH = h / 10;
+        m_cellHeaderH = Math.max(h / 20,(int)YDateViewStyle.dp2px(20));
         m_cellHeight = (h - 8 * m_cellSpacing - m_cellHeaderH) / 6;
         mShowBothInCell=m_cellWidth>25 && m_cellHeight>25;
 
@@ -290,6 +291,7 @@ public class YDateView extends View implements OnGestureListener {
         public boolean isToday;
         public boolean jewishDay;
         public boolean evnet;
+        public boolean shabbat;
         public boolean erevHag;
         public boolean tzeitHag;//if both  erevHag and tzeitHag is true then it's a Hag.
 
@@ -358,6 +360,7 @@ public class YDateView extends View implements OnGestureListener {
                 event = mDateEvents.getEvent(day_in_year);
                 attr.evnet = event != 0;
                 attr.jewishDay = mHebrewMonthAlign;
+                attr.shabbat = (mZeroCellDay + i)%7==YDate.SATURDAY;
 
                 String day_txt;
                 if (mShowBothInCell) {

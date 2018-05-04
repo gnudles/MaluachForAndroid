@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -38,6 +39,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import kapandaria.YDate.Format;
 import kapandaria.YDate.YDateLanguage;
 
 /**
@@ -45,7 +47,7 @@ import kapandaria.YDate.YDateLanguage;
  */
 
 public class PsalmsActivity extends Activity {
-    int current_chapter;
+    int current_chapter=1;
     Menu psalm_menu;
     float text_size_mm;
     SharedPreferences settings;
@@ -53,6 +55,7 @@ public class PsalmsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         getActionBar().setDisplayShowTitleEnabled(false);
         setContentView(R.layout.psalms_layout);
 
@@ -64,9 +67,21 @@ public class PsalmsActivity extends Activity {
 
         //((TextView) findViewById(R.id.textViewPsalms)).setMovementMethod(new ScrollingMovementMethod());
         ((TextView) findViewById(R.id.textViewPsalms)).setIncludeFontPadding(true);
+        if (savedInstanceState!=null)
+        {
+            setCurrentChapter( savedInstanceState.getInt("chapter"));
+        }
+        else
+        {
+            setCurrentChapter(1);
+        }
 
     }
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        outState.putInt("chapter",current_chapter);
+    }
 
     void setCurrentChapter(int a)
     {
@@ -75,13 +90,14 @@ public class PsalmsActivity extends Activity {
         if (a<1)
             a=1;
         current_chapter = a;
+        //settings.edit().putInt("psalms.chapter",current_chapter).apply();
         Spanned psalm_span=getPsalmText(current_chapter);
         ((TextView) findViewById(R.id.textViewPsalms)).setText(psalm_span, TextView.BufferType.SPANNABLE);
         //((TextView) findViewById(R.id.textViewPsalms)).scrollTo(0,0);
         ((ScrollView)findViewById(R.id.scroller)).scrollTo(0,0);
         //((Button) findViewById(R.id.psalm_chapter)).setText(YDateLanguage.getLanguageEngine(YDateLanguage.Language.HEBREW).getNumber(current_chapter));
         if (psalm_menu != null)
-            (psalm_menu.findItem(R.id.psalm_chapter_menu_item)).setTitle(YDateLanguage.getLanguageEngine(YDateLanguage.Language.HEBREW).getNumber(current_chapter));
+            (psalm_menu.findItem(R.id.psalm_chapter_menu_item)).setTitle(Format.HebIntSubString(current_chapter,false,false));
 
 
     }
@@ -117,16 +133,18 @@ public class PsalmsActivity extends Activity {
         final NumberPicker np=new NumberPicker(this);
         np.setMinValue(1);
         np.setMaxValue(150);
-        np.setValue(current_chapter);
         np.setWrapSelectorWheel(true);
-        np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        np.setValue(current_chapter);
+
+
+
         np.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int value) {
-                return YDateLanguage.getLanguageEngine(YDateLanguage.Language.HEBREW).getNumber(value);
+                return Format.HebIntSubString(value,false,false);
             }
         });
-        fixNumberPickerBug(np);
+        //fixNumberPickerBug(np);
         h.setView(np);
         h.setPositiveButton(R.string.choose, new DialogInterface.OnClickListener() {
             @Override
@@ -166,7 +184,7 @@ public class PsalmsActivity extends Activity {
     Spanned formatPsalmInner(String text)
     {
         String outputHtml=text.replace("-","־")
-                .replace("{","<small><font color='#0077bb'>")
+                .replace("{","<small><font color='#3a638e'>")
                 .replace("}","</font></small>")
                 .replace("(","<small><font color='#888888'>")
                 .replace(")","</font></small>")
@@ -208,8 +226,8 @@ public class PsalmsActivity extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.psalms_menu,menu);
         psalm_menu = menu;
-
-        setCurrentChapter(1);
+        if (psalm_menu != null)
+            (psalm_menu.findItem(R.id.psalm_chapter_menu_item)).setTitle(Format.HebIntSubString(current_chapter,false,false));
         return true;
     }
 
@@ -239,4 +257,5 @@ public class PsalmsActivity extends Activity {
 
 
     }
+
 }

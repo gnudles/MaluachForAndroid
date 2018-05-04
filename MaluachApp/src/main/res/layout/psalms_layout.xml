@@ -25,6 +25,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="6dp"
         android:textDirection="rtl"
+        android:layout_gravity="center_horizontal|right"
+        android:gravity="right"
 
         android:visibility="visible" />
 </ScrollView>

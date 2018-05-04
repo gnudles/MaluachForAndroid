@@ -83,11 +83,6 @@ public class Compass extends View implements SensorEventListener {
                 painter.setTextAlign(Paint.Align.CENTER);
                 painter.setTextSize(Radius/8);
 
-
-
-
-
-
                 canvas.drawText("N",0,-CapsRadius+font_height,painter);
                 canvas.drawText("E",CapsRadius,0+font_height,painter);
 
@@ -134,7 +129,7 @@ public class Compass extends View implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        final float alpha = 0.92f;//for low pass filtering
+        final float alpha = 0.95f;//for low pass filtering
 
         synchronized (this) {
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -145,8 +140,6 @@ public class Compass extends View implements SensorEventListener {
                         * event.values[1];
                 mGravity[2] = alpha * mGravity[2] + (1 - alpha)
                         * event.values[2];
-
-                // mGravity = event.values;
 
             }
 
@@ -164,8 +157,8 @@ public class Compass extends View implements SensorEventListener {
             }
 
             float R[] = new float[9];
-            float I[] = new float[9];
-            boolean success = SensorManager.getRotationMatrix(R, I, mGravity,
+            //float I[] = new float[9];
+            boolean success = SensorManager.getRotationMatrix(R, null, mGravity,
                     mGeomagnetic);
             if (success) {
                 float orientation[] = new float[3];

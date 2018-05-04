@@ -18,7 +18,7 @@
             android:id="@+id/textViewHeb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ff669976"
+            android:background="#ff939bc2"
             android:paddingEnd="14dp"
             android:paddingStart="14dp"
             android:textSize="20sp" />
@@ -27,7 +27,7 @@
             android:id="@+id/textViewGreg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ff71b288"
+            android:background="#ff9aa4c7"
             android:paddingEnd="14dp"
             android:paddingStart="14dp"
             android:textSize="20sp" />
@@ -36,7 +36,7 @@
             android:id="@+id/textViewEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ff99aa89"
+            android:background="#ffabb3d0"
             android:paddingEnd="14dp"
             android:paddingStart="14dp"
             android:textSize="20sp" />

@@ -219,22 +219,7 @@ public class MaluachMainActivity extends Activity {
         txtViewEvent = (TextView) findViewById(R.id.textViewEvent);
         //textViewTitle = (TextView) findViewById(R.id.textViewTitle);
         txtView = (TextView) findViewById(R.id.textViewHeb);
-        //miGregHeb = (MenuItem) findViewById(R.id.gregorian_oriented);
-        //miRTL = (MenuItem) findViewById(R.id.rightToLeft);
-        /*switchGregHeb = (Switch) findViewById(R.id.switchHebGreg);
-        switchGregHeb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setHebrewBoard(isChecked);
-            }
-        });*
-        switchRTL = (Switch) findViewById(R.id.switchRTL);
-        switchRTL.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setRTL(isChecked);
-            }
-        });*/
+
         nextMonthBtn = (Button) findViewById(R.id.nextMonthBtn);
         nextMonthBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,9 +241,18 @@ public class MaluachMainActivity extends Activity {
         ydateView.setLanguage(language);
         ydateView.dateClicked().addListener(_showInfo);
         ydateView.dateChanged().addListener(_updateText);
+        if (savedInstanceState!=null) {
+            ydateView.getDateCursor().setByDays(savedInstanceState.getInt("selected_day"));
+            ydateView.dateCursorUpdated();
+        }
         _updateText.process(null);
 
 
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        outState.putInt("selected_day",ydateView.getDateCursor().hd.daysSinceBeginning());
     }
 
     @Override
@@ -268,14 +262,14 @@ public class MaluachMainActivity extends Activity {
             case R.id.psalms_menu_item:
                 startPsalms();
                 return true;
-            case R.id.gregorian_oriented:
+            case R.id.gregorian_oriented_item:
                 item.setChecked(!item.isChecked());
                 setHebrewBoard(!item.isChecked());
                 return true;
             case R.id.compass_menu_item:
                 startCompass();
                 return true;
-            case R.id.rightToLeft:
+            case R.id.rightToLeft_item:
                 item.setChecked(!item.isChecked());
                 setRTL(item.isChecked());
                 return true;

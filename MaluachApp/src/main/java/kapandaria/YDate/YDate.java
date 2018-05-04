@@ -42,13 +42,13 @@ public class YDate {
      */
     static final int EPOCH_DAY = 2092591;//1.1.1970
 
-    static final int SUNDAY = 0;//Sun - Sunne in old english
-    static final int MONDAY = 1;//Moon - Mōna in old english
-    static final int TUESDAY = 2;//Mars - Tīw in old english
-    static final int WEDNESDAY = 3;//Mercury - Wōden in old english
-    static final int THURSDAY = 4;//Jupiter - Þunor in old english
-    static final int FRIDAY = 5;//Venus - frig in old english
-    static final int SATURDAY = 6;//Saturn - Sætern in old english
+    public static final int SUNDAY = 0;//Sun - Sunne in old english
+    public static final int MONDAY = 1;//Moon - Mōna in old english
+    public static final int TUESDAY = 2;//Mars - Tīw in old english
+    public static final int WEDNESDAY = 3;//Mercury - Wōden in old english
+    public static final int THURSDAY = 4;//Jupiter - Þunor in old english
+    public static final int FRIDAY = 5;//Venus - frig in old english
+    public static final int SATURDAY = 6;//Saturn - Sætern in old english
     /**
      * The difference between the "beginning count" and the Julian count. (the
      * Julian count start earlier)

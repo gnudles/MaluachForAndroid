@@ -2,6 +2,7 @@ package kapandaria.maluach;
 import kapandaria.maluach.YDateView.DrawAttributes;
 import kapandaria.maluach.YDateView.StyleDraw;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -22,7 +23,6 @@ public class YDateViewStyle implements StyleDraw {
     Path mCellPathDarkGregBottom;
     Path mCellPathTipClear;
     Path mCellPathTip;
-    Path mSelectionPath;
     Bitmap mCellBitmap;
     Bitmap mCellBitmapSelected;
     Bitmap mCellBitmapGray;
@@ -52,6 +52,14 @@ public class YDateViewStyle implements StyleDraw {
         mCellPaint = new Paint(Paint.ANTI_ALIAS_FLAG|Paint.SUBPIXEL_TEXT_FLAG);
 
     }
+    public static float dp2px(float dp)
+    {
+        return dp* Resources.getSystem().getDisplayMetrics().density;
+    }
+    public static float px2dp(float px)
+    {
+        return px/ Resources.getSystem().getDisplayMetrics().density;
+    }
     private void initCellPath()
     {
         mCellPath= new Path();
@@ -64,8 +72,8 @@ public class YDateViewStyle implements StyleDraw {
 
         mCellPathTipClear=new Path();
         mCellPathTipClear.moveTo(mHSpacing,mHSpacing);
-        mCellPathTipClear.lineTo(mHSpacing+mCellMin*0.2f,mHSpacing);
-        mCellPathTipClear.lineTo(mHSpacing,mCellMin*0.2f+mHSpacing);
+        mCellPathTipClear.lineTo(mHSpacing+mCellMin*0.21f,mHSpacing);
+        mCellPathTipClear.lineTo(mHSpacing,mCellMin*0.21f+mHSpacing);
         mCellPathTipClear.lineTo(mHSpacing,mHSpacing);
         mCellPathTip=new Path();
         mCellPathTip.moveTo(mHSpacing,mHSpacing);
@@ -79,6 +87,7 @@ public class YDateViewStyle implements StyleDraw {
         mCellPathDark.lineTo(mCellW+mHSpacing,mCellH*0.4f+mHSpacing);
         mCellPathDark.quadTo(mCellW*0.5f+mHSpacing,mCellH*0.6f+mHSpacing,mHSpacing,mCellH*0.4f+mHSpacing);
         mCellPathDark.lineTo(mHSpacing,mHSpacing);
+        mCellPathDark.op(mCellPathTipClear, Path.Op.DIFFERENCE);
 
         mCellPathLight= new Path();
         mCellPathLight.moveTo(mHSpacing,mCellH*0.4f+mHSpacing);
@@ -89,22 +98,24 @@ public class YDateViewStyle implements StyleDraw {
         mCellPathDarkGregTop= new Path();
         mCellPathDarkGregTop.moveTo(mHSpacing,mHSpacing);
         mCellPathDarkGregTop.lineTo(mCellW+mHSpacing,mHSpacing);
-        mCellPathDarkGregTop.lineTo(mCellW+mHSpacing,mCellH*0.4f+mHSpacing);
-        mCellPathDarkGregTop.quadTo(mCellW*0.5f+mHSpacing,mCellH*0.6f+mHSpacing,mHSpacing,mCellH*0.4f+mHSpacing);
+        mCellPathDarkGregTop.lineTo(mCellW+mHSpacing,mCellH*0.2f+mHSpacing);
+        mCellPathDarkGregTop.quadTo(mCellW*0.32f+mHSpacing,mCellH*0.35f+mHSpacing,mHSpacing,mCellH*0.21f+mHSpacing);
         mCellPathDarkGregTop.lineTo(mHSpacing,mHSpacing);
+        mCellPathDarkGregTop.op(mCellPathTipClear, Path.Op.DIFFERENCE);
 
         mCellPathLightGreg= new Path();
-        mCellPathLightGreg.moveTo(mHSpacing,mCellH*0.4f+mHSpacing);
-        mCellPathLightGreg.lineTo(mHSpacing,mCellH+mHSpacing);
-        mCellPathLightGreg.lineTo(mHSpacing+mCellW,mCellH+mHSpacing);
-        mCellPathLightGreg.lineTo(mHSpacing+mCellW,mCellH*0.4f+mHSpacing);
+        mCellPathLightGreg.moveTo(mHSpacing,mCellH*0.15f+mHSpacing);
+        mCellPathLightGreg.lineTo(mHSpacing,mCellH*0.8f+mHSpacing);
+        mCellPathLightGreg.lineTo(mHSpacing+mCellW,mCellH*0.8f+mHSpacing);
+        mCellPathLightGreg.lineTo(mHSpacing+mCellW,mCellH*0.15f+mHSpacing);
+        mCellPathLightGreg.op(mCellPathTipClear, Path.Op.DIFFERENCE);
 
         mCellPathDarkGregBottom= new Path();
-        mCellPathDarkGregBottom.moveTo(mHSpacing,mHSpacing);
-        mCellPathDarkGregBottom.lineTo(mCellW+mHSpacing,mHSpacing);
-        mCellPathDarkGregBottom.lineTo(mCellW+mHSpacing,mCellH*0.4f+mHSpacing);
-        mCellPathDarkGregBottom.quadTo(mCellW*0.5f+mHSpacing,mCellH*0.6f+mHSpacing,mHSpacing,mCellH*0.4f+mHSpacing);
-        mCellPathDarkGregBottom.lineTo(mHSpacing,mHSpacing);
+        mCellPathDarkGregBottom.moveTo(mCellW+mHSpacing,mCellH+mHSpacing);
+        mCellPathDarkGregBottom.lineTo(mHSpacing,mCellH+mHSpacing);
+        mCellPathDarkGregBottom.lineTo(mHSpacing,mCellH*0.7f+mHSpacing);
+        mCellPathDarkGregBottom.quadTo(mCellW*0.6f+mHSpacing,mCellH*0.8f+mHSpacing,mCellW+mHSpacing,mCellH*0.69f+mHSpacing);
+        mCellPathDarkGregBottom.lineTo(mCellW+mHSpacing,mCellH+mHSpacing);
     }
     /*private void initSelectionPath()
     {
@@ -123,6 +134,32 @@ public class YDateViewStyle implements StyleDraw {
         mSelectionPath.quadTo(0,0,corner,0);
 
     }*/
+    void drawCellBackground(Canvas c,int color_index,boolean day_sunset)
+    {
+        int color_dark=cell_colors[color_index][0];
+        int color_light=cell_colors[color_index][1];
+
+            mCellPaint.setColor(color_light);
+        if(day_sunset) {
+            c.drawPath(mCellPathLight, mCellPaint);
+        }
+        else {
+            c.drawPath(mCellPathLightGreg, mCellPaint);
+        }
+            mCellPaint.setColor(color_dark);
+        if(day_sunset) {
+            c.drawPath(mCellPathDark, mCellPaint);
+        }
+        else
+        {
+            c.drawPath(mCellPathDarkGregTop, mCellPaint);
+            c.drawPath(mCellPathDarkGregBottom, mCellPaint);
+        }
+
+
+        //mCellPaint.setColor(0xffffffff);
+        //c.drawPath(mCellPathTipClear,mCellPaint);
+    }
     public void updateMeasurements(int cellw,int cellh, int headerh, int space)
     {
         mSpacing=space;
@@ -140,7 +177,7 @@ public class YDateViewStyle implements StyleDraw {
             font_size=(float)mCellMin*0.5f;
             mTransparentPaint.setTextSize(font_size);
             mCellPaint.setTextSize(font_size);
-            mCellPaint.setTypeface(Typeface.create("serif",Typeface.NORMAL));
+            //mCellPaint.setTypeface(Typeface.create("serif",Typeface.NORMAL));
 
             Rect bounds=new Rect();
             mCellPaint.getTextBounds("ל\"",0,2,bounds);
@@ -149,8 +186,10 @@ public class YDateViewStyle implements StyleDraw {
             font_num_height = bounds.height();
             mDrawText=true;
         }
-        else
-            mDrawText=false;
+        else {
+            mDrawText = false;
+            font_size=(float)mCellMin*0.9f;
+        }
         initCellPath();
         mCellBW=mCellW+2*mHSpacing;
         mCellBH=mCellH+2*mHSpacing;
@@ -161,13 +200,14 @@ public class YDateViewStyle implements StyleDraw {
         mCellBitmapGray = Bitmap.createBitmap(cellw+2*mHSpacing, cellh+2*mHSpacing, Bitmap.Config.ARGB_8888);
         Canvas cell_canvas =new Canvas(mCellBitmap);
 
-        mCellPaint.setColor(0xff49a3ff);
+        mCellPaint.setColor(0xfff3f1e2);
         cell_canvas.drawPath(mCellPathLight,mCellPaint);
-        mCellPaint.setColor(0xff0b6acb);
+        mCellPaint.setColor(0xffe8e6d0);
         cell_canvas.drawPath(mCellPathDark,mCellPaint);
 
         cell_canvas.drawPath(mCellPathTipClear,mTransparentPaint);
 
+        //selection
         cell_canvas.setBitmap(mCellBitmapSelected);
         mCellPaint.setColor(0xffff8019);
         //cell_canvas.drawRect(0,0,mCellW+2*mSpacing-2,mCellH+2*mSpacing-2,mCellPaint);
@@ -186,7 +226,7 @@ public class YDateViewStyle implements StyleDraw {
         //cell_canvas.drawRect(mHSpacing,mHSpacing,cellw+mHSpacing,cellh+mHSpacing,cell_paint);
         
         cell_canvas.setBitmap(mCellBitmapGray);
-        mCellPaint.setColor(0xffaaaaaa);
+        mCellPaint.setColor(0xffe8e7e2);
         cell_canvas.drawPath(mCellPath,mCellPaint);
 
     }
@@ -194,15 +234,16 @@ public class YDateViewStyle implements StyleDraw {
     public void drawHeader(Canvas c, int x, int y,String txt)
     {
         x += mSpacing;
-        mCellPaint.setColor(0xff3993dd);
+        mCellPaint.setColor(0xff9aa4c7);
         c.drawRect(x,y,x+mCellBW-mSpacing,y+mHeaderH,mCellPaint);
         Rect bounds = new Rect();
+        mCellPaint.setTextSize(font_size*0.8f);
         mCellPaint.getTextBounds(txt,0,txt.length(),bounds);
         float text_pos_x=x+(mCellBW-mSpacing)/2.0f;
         float text_pos_y=y+(mHeaderH+bounds.height())/2.0f;
         mCellPaint.setColor(0xff000000);
         //mCellPaint.setTypeface(Typeface.create("Arial",Typeface.BOLD));
-        mCellPaint.setTextSize(font_size);
+
         mCellPaint.setTextAlign(Paint.Align.CENTER);
         c.drawText(txt, text_pos_x, text_pos_y, mCellPaint);
     }
@@ -210,6 +251,11 @@ public class YDateViewStyle implements StyleDraw {
     {
         return ( "א".codePointAt(0) <= letter && "ת".codePointAt(0)>= letter);
     }
+    final int cell_colors[][]=
+            {
+                    {0xffe8e6d0,0xfff3f1e2},
+                    {0xffe3d3ab,0xfff1e5c8}
+            };
     public void drawCell(Canvas c, int x, int y,String txt, DrawAttributes attr)
     {
         Bitmap toDraw;
@@ -218,15 +264,22 @@ public class YDateViewStyle implements StyleDraw {
         y += mHSpacing;
 
         if (attr.before || attr.after) {
+
             toDraw = mCellBitmapGray;
+            c.drawBitmap(toDraw,x,y,null);
         }
         else {
-
-                toDraw = mCellBitmap;
-
+            int color_index=0;
+            if (attr.shabbat)
+            {
+                color_index=1;
+            }
+                c.translate(x,y);
+                drawCellBackground(c,color_index,attr.jewishDay);
+                c.translate(-x,-y);
         }
 
-        c.drawBitmap(toDraw,x,y,null);
+
         if (attr.selected)
         {
             toDraw = mCellBitmapSelected;
@@ -240,9 +293,16 @@ public class YDateViewStyle implements StyleDraw {
             c.drawPath(shifted, mCellPaint);
         }
 
-        int text_color=0xffffffff;
+        int text_color;
         if (attr.isToday)
-            text_color=0xffffde00;
+            text_color=0xffac213b;
+        else
+        {
+            if (attr.before || attr.after) {
+                text_color=0xff87917b;
+            }
+            else text_color=0xff384d1d;
+        }
         mCellPaint.setColor(text_color);
         if (txt.contains(":")) {
             String[] splited=txt.split(":",2);
